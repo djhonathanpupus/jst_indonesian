@@ -1,0 +1,435 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>WMSS - DLNN Sentiment Analysis</title>
+{% load staticfiles %}
+<link href="{% static 'css/bootstrap.min.css' %}" rel="stylesheet">
+<link href="{% static 'css/datepicker3.css' %}" rel="stylesheet">
+<link href="{% static 'css/styles.css' %}" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css?family=Montserrat:400,700" rel="stylesheet" type="text/css">
+<link href='https://fonts.googleapis.com/css?family=Kaushan+Script' rel='stylesheet' type='text/css'>
+<link href='https://fonts.googleapis.com/css?family=Droid+Serif:400,700,400italic,700italic' rel='stylesheet' type='text/css'>
+<link href='https://fonts.googleapis.com/css?family=Roboto+Slab:400,100,300,700' rel='stylesheet' type='text/css'>
+<!--Icons-->
+<script src="{% static 'js/jquery-1.11.1.min.js' %}"></script>
+<script src="{% static 'js/jQuery.blockUI.js' %}"></script>
+<script src="{% static 'js/lumino.glyphs.js' %}"></script>
+<script src="{% static 'js/bootstrap.min.js' %}"></script>
+<script>window.CSRF_TOKEN = "{{csrf_token}}"</script>
+<!--[if lt IE 9]>
+<script src="js/html5shiv.js"></script>
+<script src="js/respond.min.js"></script>
+<![endif]-->
+<style>
+	.verif{
+		display: none;
+	}
+</style>
+</head>
+
+<body>
+	<nav class="navbar navbar-inverse navbar-fixed-top" role="navigation">
+	<div class="container-fluid">
+		<div class="navbar-header">
+			<button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#sidebar-collapse">
+				<span class="sr-only">Toggle navigation</span>
+				<span class="icon-bar"></span>
+				<span class="icon-bar"></span>
+				<span class="icon-bar"></span>
+			</button>
+			<a class="navbar-brand" href="http://localhost:8000/">
+				<span class="glyphicon glyphicon-stats"></span>&nbsp;<span>WM</span>SS
+			</a>
+			<ul class="user-menu">
+				<li class="dropdown pull-right">
+					<a href="#" class="dropdown-toggle" data-toggle="dropdown">
+						<svg class="glyph stroked male-user"><use xlink:href="#stroked-male-user"></use></svg> User 
+						<span class="caret"></span>
+					</a>
+					<ul class="dropdown-menu" role="menu">
+						<li><a href="#"><svg class="glyph stroked male-user"><use xlink:href="#stroked-male-user"></use></svg> Profile</a></li>
+						<li><a href="#"><svg class="glyph stroked gear"><use xlink:href="#stroked-gear"></use></svg> Settings</a></li>
+						<li><a href="#"><svg class="glyph stroked cancel"><use xlink:href="#stroked-cancel"></use></svg> Logout</a></li>
+					</ul>
+				</li>
+			</ul>
+		</div>
+	</div><!-- /.container-fluid -->
+	</nav>
+		
+	<div id="sidebar-collapse" class="col-sm-3 col-lg-2 sidebar">
+		<ul class="nav menu">					
+			<li class="list-group-item" style="border:none; color:#30a5ff;"><strong> Crawling</strong></li>
+			<li><a href="crawling.html"><svg class="glyph stroked camera"><use xlink:href="#stroked-camera"></use></svg>Web Crawling</a></li>
+			<li><a href="crawling.html"><svg class="glyph stroked camera"><use xlink:href="#stroked-camera"></use></svg>Social Media Crawling</a></li>
+			<li role="presentation" class="divider"></li>
+			<li class="list-group-item" style="border:none; color:#30a5ff;"><strong>Preprocessing</strong></li>
+			<li><a href="preprocessing.html"><svg class="glyph stroked hourglass"><use xlink:href="#stroked-hourglass"></use></svg> Stemming</a></li>
+			<li><a href="preprocessing.html"><svg class="glyph stroked hourglass"><use xlink:href="#stroked-hourglass"></use></svg> Stocking</a></li>
+			<li role="presentation" class="divider"></li>
+			<li class="parent active">
+				<a href="#">
+					<span data-toggle="collapse" href="#sub-item-1"><svg class="glyph stroked line-graph"><use xlink:href="#stroked-line-graph"></use></svg> Analysis </span>
+				</a>
+				<ul class="children collapse" id="sub-item-1">
+					<li>
+						<a class="" href="#">
+							<svg class="glyph stroked chevron-right"><use xlink:href="#stroked-chevron-right"></use></svg> TOTM
+						</a>
+					</li>
+					<li>
+						<a class="" href="http://localhost:8000/dlnn">
+							<svg class="glyph stroked chevron-right"><use xlink:href="#stroked-chevron-right"></use></svg> Deep Learning NN
+						</a>
+					</li>
+					<li>
+						<a class="" href="#">
+							<svg class="glyph stroked chevron-right"><use xlink:href="#stroked-chevron-right"></use></svg> Mind Map Generator
+						</a>
+					</li>
+				</ul>
+			</li>
+			<li role="presentation" class="divider"></li>
+			<li>
+				<a href="login.html"><svg class="glyph stroked male-user"><use xlink:href="#stroked-male-user"></use></svg> Login Page</a>
+			</li>
+		</ul>
+	</div><!--/.sidebar-->
+		
+	<div class="col-sm-9 col-sm-offset-3 col-lg-10 col-lg-offset-2 main">			
+		<div class="row">
+			<ol class="breadcrumb">
+				<li>
+					<a href="http://localhost:8000">
+						<svg class="glyph stroked home">
+							<use xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="#stroked-home"></use>
+						</svg>
+					</a>
+				</li>
+				<li class="active">
+					<a href="#">Analysis</a>
+				</li>
+				<li class="active">
+					<a href="http://localhost:8000/dlnn"> DLNN Sentimen Analysis</a>
+				</li>
+			</ol>
+		</div>
+		
+		<div class="row">
+			<div class="col-md-12">
+				<div class="alert alert-info">
+					<h2>Deep Learning Neural Network</h2>
+					<h4>for sentiment analysis</h4>
+				</div>
+			</div>
+			
+			<div class="col-md-12">
+				<div class="panel panel-default">
+					<ul class="nav nav-tabs">
+						<li class="active"><a data-toggle="tab" href="#prediksi">Prediction</a></li>
+						<li><a data-toggle="tab" href="#create">Create Model</a></li>
+						<li><a data-toggle="tab" href="#help">Help</a></li>
+					</ul>
+					<div class="tab-content">
+						<div id="prediksi" class="tab-pane fade in active">
+							<h4>Prediksi Sentimen:</h4>
+							<form method ="POST" enctype='multipart/form-data'>
+							{% csrf_token %}
+								<div class="form-group">
+									<label for="topik">Pilih topik </label>
+									<select name="topik" class="form-control" id="topik">
+									{% for i in topik %}
+										<option value ={{i}}> {{i}}</option>
+									{% endfor %}
+									</select>
+								</div>
+								<div class="form-group">
+									<label for="feature">Pilih metode transformasi teks (<em>feature extraction</em>)</label>
+									<select name="FE" class="form-control">
+									{% for i in data %}
+										<option value ={{i}}> {{i}}</option>
+									{% endfor %}
+									</select>
+								</div>
+								<table data-toggle="table" data-url="true"  data-show-refresh="true" data-show-toggle="true" data-show-columns="true" data-search="true" data-select-item-name="toolbar1" data-pagination="true" data-sort-name="user" data-sort-order="user">
+										<thead>
+										<tr>
+											<th data-field="user" data-sortable="true">data Awal</th>
+										</tr>
+										</thead>
+										<tbody>
+										{% for a in inputDB %}
+										<tr>
+											<td>{{a}}</td>
+										</tr>
+										{% endfor %}
+										</tbody>
+										</table>
+										<input type="hidden" name ="dataCrawl" value ={{database}}>
+								<input class="btn btn-primary" type="submit" value="Predict" name='input' id="predict_button">
+							</form>
+						</div>
+						
+						<div id="create" class="tab-pane fade">
+							<h4>Buat Model:</h4>
+							<form method ="POST" enctype='multipart/form-data'>{% csrf_token %}
+								<div class="form-group">
+									<label for="text">Nama topik</label>
+									<textarea class="form-control" name="inputTopik" rows='1' cols='10'></textarea>
+									<em>*tidak menggunakan tanda spasi, contoh: sentimen_publik01</em>
+								</div>
+								<div class="form-group">
+									<label for="KS">Pilih jumlah kelas sentimen</label>
+									<select name="KS" class="form-control">
+									{% for i in kelasSentimen %}
+										<option value ={{i}}> {{i}}</option>
+									{% endfor %}
+									</select>
+								</div>
+								<div class="form-group">
+									<label for="inputData">Masukkan 'DATASET'</label>
+									<input type="file" name="inputData">
+								</div>
+								<div class="form-group">
+									<label for="inputLabel">Masukkan 'LABEL' dari dataset</label>
+									<input type="file" name="inputLabel">
+								</div>
+								<input class="btn btn-primary" type="submit" value="Create" name='create' id='create_button' onclick="reloadPage()">
+							</form>
+						</div>
+						
+						<div id="help" class="tab-pane fade">
+							<form method ="POST" enctype='multipart/form-data'>
+								<div class="form-group">
+									<div class="form-group">
+										<h4>Mengenai Deep Learning Neural Network</h4>
+									</div>
+								<div class="form-group">
+									<strong><em>Deep Learning</em></strong> merupakan salah satu metode pembelajaran mesin (<em>machine learning</em>) yang terdiri 
+									dari seperangkat algoritme yang melakukan pemodelan abstraksi tingkat tinggi pada data menggunakan sekumpulan 
+									fungsi transformasi non-linear yang ditata berlapis-lapis dan mendalam (Li Deng & Dong Yu, 2014). Deep Learning 
+									terdiri dari tumpukan atau stack dari beberapa algoritme atau metode. Konsep dasar dari metode ini didapatkan 
+									dengan meniru sistem kerja otak manusia (<em>neuroscience</em>) dalam memecahkan masalah. </br>
+									Pada dasarnya Deep Learning Network Network terdiri dari 3 bagian (lapisan) utama, yaitu: </br>
+									1. Lapisan Masukan (<em>input layer</em>) - merupakan lapisan yang terdiri dari neuron  yang menerima data masukan dari variabel X. </br>
+									2. Lapisan Tersembunyi (<em>hidden layer</em>) - lapisan ini terdiri dari neuron yang menerima data dari lapisan masukan sebelumnya. </br>
+									3. Lapisan Keluaran (<em>output layer</em>) - terdiri dari neuron yang menerima data dari lapisan tersembunyi yang menghasilkan nilai keluaran dan 
+									merupakan hasil kalulasi dari variabel-variabel X menjadi nilai Y
+								</div>
+									<center>
+										<img src={% static "image/DLN.png" %} style="width:380px;height:250px;">
+									</center>
+									
+									<div class="form-group">
+										<h4>Paduan Penggunaan</h4>
+									</div>
+									<strong>1. Tab Prediction :</strong>
+									</br>
+									Pada bagian tab ini anda dapat memanfaatkan model yang telah terbentuk sebelumnya untuk memrediksi satu hingga beberapa
+									teks sentimen sekaligus dengan cara mengisi kolom teks yang tersedia atau dengan mengimport file teks pada tombol 
+									<em>choose file</em>. Setelah melakukan prediksi, selanjutnya anda dapat melakukan verifikasi hasil (benar/salah) yang
+									kemudian hasil dari verifikasi tersebut digunakan untuk peng<em>updatean</em> dataset dan model demi penyempurnaan.
+									</br> </br>							
+									<strong>2. Tab Create Model :</strong>
+									</br>
+									Pada bagian tab ini anda dapat membuat (<em>create</em>) model anda sendiri sesuai dengan topik sentimen yang anda inginkan.
+									Disini anda akan dimintai beberapa input diantaranya nama model, jumlah kelas klasifikasi, dan input data berserta label dari 
+									topik tersebut. Model yang dihasilkan dalam proses ini akan <b><u>langsung ditambahkan</u></b> pada tab prediksi sehingga dapat langsung digunakan.
+									</br> </br>
+									<strong>3. Tab Help :</strong>
+									</br>
+									Bagian tab ini berisi petunjuk penggunaan dan sekilas deskripsi mengenai algoritme yang digunakan.
+									</br>
+								</br>
+									<center>
+										<img src={% static "image/kerangkaPikir.png" %} style="width:350px;height:420px;">
+									</br>
+										<strong>kerangka pikir modul aplikasi</strong>
+									</center>
+									</br>
+								</div>
+							</form>
+						</div>							
+					</div>
+				</div>
+				
+				{% if hasil %}
+				<div style="margin-bottom: 10px">
+					<h3>Tabel Hasil</h3>
+					<table class="table table-striped" id="hasil-tabel">
+						<tr>
+							<th>Teks Awal</th>
+							<th>Hasil Preprocessing</th>
+							<th>Sentimen</th>
+							<th class="verif tbl"></th>
+						</tr>
+					</table>
+					<button onclick="cancelVerif(event)" class="verif btn btn-danger">Cancel</button>
+					<button onclick="confirmVerif()" class="verif btn btn-primary">Confirm</button>
+					<button onclick="verifikasi(event)" class="verifikasi btn btn-primary" type ='button'>Verifikasi Hasil</button>
+					<button onclick="update()" class="btn btn-primary" type ='button'>Re-Modeling</button>
+					<button onclick="visualization()" class="btn btn-primary" type ='button'>Visualisasi</button>
+					<form method="POST" id="form-visualization" action="{% url 'dlnn_visualisasi' %}" style="display:none">
+						{% csrf_token %}
+					</form>
+				</div>
+					
+				<script>											
+				$(document).ready(function(){
+					$('#predict_button').click(function(){
+					$.blockUI({ 
+						message: '<img src={% static "image/blue-circles-loading-animation-large.gif" %} />',
+    					css: {
+        				border:     'none',
+        				backgroundColor:'transparent'
+    					}
+					});
+ 
+			       		setTimeout($.unblockUI, 600000);
+					});
+				});
+				$(document).ready(function(){
+					$('#create_button').click(function(){
+					$.blockUI({ 
+						message: '<img src={% static "image/blue-circles-loading-animation-large.gif" %}/>',
+    					css: {
+        				border:     'none',
+        				backgroundColor:'transparent'
+    					}
+					});
+ 
+			       		setTimeout($.unblockUI, 600000);
+					});
+				});
+												
+					var hasil = {{ hasil|safe }}
+					var topik = '{{ selected_topic|safe }}'
+					for(i=0; i<hasil.length; i++){
+						var tr = $('<tr></tr>')
+						tr.append('<td>'+hasil[i].input+'</td>')
+						tr.append('<td>'+hasil[i].prepros+'</td>')
+						tr.append('<td>'+hasil[i].prediction+'</td>')
+						tr.append('<td class="verif tbl"><input class="checkverif" type="checkbox" data-id="'+i+'" checked></td>')
+						$('#hasil-tabel').append(tr)
+					}
+					$('.checkverif').change(function(){
+						var id = $(this).data('id')
+						hasil[id].confirm = !hasil[id].confirm
+					})
+				</script>
+				{% endif %}
+			</div>
+		</div><!--/.row-->
+		</br>
+		</br>
+	</div>	<!--/.main-->
+	<script src={% static 'js/bootstrap-table.js' %}></script>  
+	<script>	
+		var verificationProcess = false;
+		!function ($) {
+			$(document).on("click","ul.nav li.parent > a > span.icon", function(){          
+				$(this).find('em:first').toggleClass("glyphicon-minus");      
+			}); 
+			$(".sidebar span.icon").find('em:first').addClass("glyphicon-plus");
+		}(window.jQuery);
+
+		$(window).on('resize', function () {
+		  if ($(window).width() > 768) $('#sidebar-collapse').collapse('show')
+		})
+		$(window).on('resize', function () {
+		  if ($(window).width() <= 767) $('#sidebar-collapse').collapse('hide')
+		})
+		
+		function verifikasi(event){
+			event.preventDefault();
+			verificationProcess = !verificationProcess;
+			if(verificationProcess){
+				$('.verif').css('display', 'initial');
+				$('.tbl').css('display', 'table-cell');
+				$('.verifikasi').css('display', 'none');
+			} else {
+				$('.verif').css('display', 'none');
+			}
+		}
+		
+		function cancelVerif(){
+			verificationProcess = false;
+			$('.verif').css('display', 'none');
+			$('.verifikasi').css('display', 'inline-block');
+		}
+		
+		function confirmVerif(){
+			var dataHasil = JSON.stringify(hasil)
+			$.ajax({
+				url: "{% url 'dlnn_verif' %}",
+				type: "POST",
+				data: {
+					data: dataHasil,
+					topik: topik,
+					csrfmiddlewaretoken: CSRF_TOKEN
+				},
+				success: function(json){
+					alert('Konfirmasi berhasil');
+				},
+				error: function(xhr, errmsg, err){
+					alert('Terjadi kesalahan');
+				}
+			})
+		}
+		
+		function update(){
+			$.ajax({
+				url: "{% url 'dlnn_update_model' %}",
+				type: "POST",
+				data: {
+					topik: topik,
+					csrfmiddlewaretoken: CSRF_TOKEN
+				},
+				success: function(json){
+					alert('Update model berhasil');
+				},
+				error: function(xhr, errmsg, err){
+					alert('Terjadi kesalahan');
+				}
+			})
+		}
+		
+		function visualisasi(){
+			var dataHasil = JSON.stringify(hasil)
+			$.ajax({
+				url: "{% url 'dlnn_visualisasi' %}",
+				type: "POST",
+				data: {
+					data: dataHasil,
+					topik: $('#topik').val(),
+					csrfmiddlewaretoken: CSRF_TOKEN
+				},
+				success: function(json){
+					alert('Visualisasi berhasil');
+				},
+				error: function(xhr, errmsg, err){
+					alert('Terjadi kesalahan');
+				}
+			})
+		}
+		
+		function visualization(){
+			var form = $('#form-visualization');
+			
+			var dataHasil = JSON.stringify(hasil);
+			var data = $('<input name="data" type="text">')
+			data.val(dataHasil)
+			var topik = $('<input name="topik" type="text" value="'+$('#topik').val()+'">') 
+			form.append(data)
+			form.append(topik)
+			form.submit();
+		}
+		
+		function reloadPage() {
+    		location.reload();
+		}
+	</script> 
+</body>
+</html>

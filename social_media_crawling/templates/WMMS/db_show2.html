@@ -1,0 +1,30 @@
+{% extends 'WMMS/header.html' %}
+
+{% block content %}
+<a href='../search'>Crawl</a>
+<a href='../del'>delete</a>
+<center>
+<h2>TEST</h2>
+<table style ="border : 1px solid black">
+<tr>
+	<th>tanggal</th>
+	<th>nama</th>
+	<th>content</th>
+	<th>RT: User</th>
+	<th>RT: Post</th>
+	<th>#Hashtag#</th>
+</tr>
+	{% for post in object_list %}
+		<tr>
+			<td>{{post.date}}</td>
+			<td>{{post.name}}</td>
+			<td>{{post.tweet}}</td>
+			<td>{{post.Retweet_user}}</td>
+			<td>{{post.Retweet_post}}</td>
+			<td>{{post.hashtag}}</td>
+		</tr>
+	{% endfor %}
+</table>
+</center>
+
+{% endblock %}

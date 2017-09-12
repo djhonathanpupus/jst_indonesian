@@ -1,0 +1,191 @@
+{% extends 'WMMS/base.html' %}
+
+{%block title%}
+WMSS - Data Management Twitter
+{%endblock%}
+{% block content %}
+<head>
+    <title>JST Mutual Information</title>
+</head>
+{% load staticfiles%}
+<form method="POST">{% csrf_token %}
+
+<h4>DATA TWITTER</h4>
+<div class="row">
+<label>Pilih Dataset :</label>
+<select id='db_choice' name='data_choice' onchange="this.form.submit()">
+	<option>Dataset {{choice}}</option>
+{% for i in topik %}
+	<option value ='{{i.id}}'>{{i.topik}}</option>
+{% endfor %}
+</select>
+</div>
+</form>
+{%if choice != '' %}
+<button type="button" data-toggle="modal" data-target="#deleteDS1" class="btn btn-danger btn-sm">Delete Dataset</button>
+{%endif%}
+
+<form method="POST">{% csrf_token %}
+		<table data-toggle="table" data-url="true"  data-show-refresh="true" data-show-toggle="true" data-show-columns="true" data-search="true" data-pagination="true" data-sort-name="id" data-click-to-select="true">
+		    <thead>
+		    <tr>
+		        <th data-field="date" data-sortable="true">date</th>
+		        <th data-field="name" data-sortable="true">name</th>
+		        <th data-field="tweet" data-sortable="true">tweet</th>
+		        <th data-field="RT-U" data-sortable="true">RT:user</th>
+		        <th data-field="hashtag" data-sortable="true">hashtag</th>
+		        <th data-field="id"><input type="checkbox" id="checkAll"></th>
+		    </tr>
+		    </thead>
+		    <tbody>
+		    	{% for post in Tweets %}
+					<tr>
+						<td>{{post.date|date}}</td>
+						<td>{{post.name}}</td>
+						<td>{{post.tweet}}</td>
+						<td>{{post.Retweet_user}}</td>
+						<td>{{post.hashtag}}</td>
+						<td><input type="checkbox" value={{post.id}} class="checkItem"name="check"></td>
+					</tr>
+				{% endfor %}
+		    </tbody>
+		</table>
+		{% if choice != '' %}
+		<table style="width:100%;">
+								<tr>
+									<td>
+								  <button type="button" class="btn btn-info" data-toggle="collapse" data-target="#demo">Download</button>
+ 
+								</td>
+								<td><button data-toggle="modal" data-target="#analisisbtn"  type="button" class="btn btn-info">Analisis</button>
+								</td>
+								<td>
+								<button name="visual" type="submit" class="btn btn-info btn-md" style="text-align:right;float:right">Visualize</button>		
+								</td>
+								<td>
+								<button type="button" class="btn btn-danger btn-md" data-toggle="modal" data-target="#deletetweet" style="text-align:right;float:right">Delete Checked</button>
+								</td>
+								</tr>
+									<!--./collapse use only-->
+								<tr>
+									<td> 
+									<div id="demo" class="collapse">
+									<div class="form-group">
+										<div class="checkbox">
+											<label>
+												<input name="dlFile" type="checkbox" value="0">CSV
+											</label>
+										</div>
+										<div class="checkbox">
+											<label>
+												<input name="dlFile" type="checkbox" value="1">JSON
+											</label>
+										</div>
+										<div class="checkbox">
+											<label>
+												<input name="dlFile" type="checkbox" value="2">XLS
+											</label>									
+										</div>
+										</div>
+									<input type="hidden" name ="db_choice" value ={{choice}}>
+									<button name="download" type="submit" class="btn btn-success btn-sm">Download</button>
+							</div></td>
+							<td></td>
+							<td></td>
+							<td></td></tr>
+	</table>
+				  <!-- Modal -->
+		<div class="modal fade" id="deletetweet" role="dialog">
+		<div class="modal-dialog" style="height:540px; max-height:540px; width:630px; max-width:630px;">
+		    
+	      <!-- Modal content-->
+	      <div class="modal-content">
+	        <div class="modal-header">
+	     	<center>
+	          <button type="button" class="close" data-dismiss="modal">&times;</button>
+	          <h4 class="modal-title">Delete Data Twitter</h4>
+	        </center>
+	        </div>
+	        <div class="modal-body">
+	        <center>
+	          <p>Apakah anda yakin</p>
+	          <button type= 'submit' name="delete" class = "btn btn-default">Ya</button>
+	          <button type="button" class="btn btn-default" data-dismiss="modal" style="margin-left: 10px;">Tidak</button>
+	        </center>
+	        </div>
+	      </div>
+	    </div>
+	  </div>
+	  <!--/.endmodal-->	
+
+		<!-- Modal ANALISIS DATA -->
+		<div class="modal fade" id="analisisbtn" role="dialog">
+		<div class="modal-dialog" style="height:540px; max-height:540px; width:630px; max-width:630px;">
+		    
+	      <!-- Modal content-->
+	      <div class="modal-content">
+	        <div class="modal-header">
+	     	<center>
+	          <button type="button" class="close" data-dismiss="modal">&times;</button>
+	          <h4 class="modal-title">Analisis Data Twitter</h4>
+	        </center>
+	        </div>
+	        <div class="modal-body">
+	        <center>
+	        	<form method="POST">{%csrf_token%}
+	        		<input type="hidden" name ="db_choice" value ={{choice}}>
+	          	<input style ="width:120px" name="PP" type="submit" class="btn btn-info" value ="Preprocess"><br/><br/>
+				<input style ="width:120px" name="JST"type="submit" class="btn btn-info" value= "JST"><br/><br/>
+				<input style ="width:120px" name="DLNN" type="submit" class="btn btn-info" value="DLNN"><br/><br/>
+				</form>	        
+	        </center>
+	        </div>
+	      </div>
+	    </div>
+	  </div>
+	  <!--/.endmodal-->	
+	
+</form>
+  <!-- Modal -->
+		<div class="modal fade" id="deleteDS1" role="dialog">
+		<div class="modal-dialog" style="height:540px; max-height:540px; width:630px; max-width:630px;">
+
+<!-- Modal content-->
+	      <div class="modal-content">
+	        <div class="modal-header">
+	     	<center>
+	          <button type="button" class="close" data-dismiss="modal">&times;</button>
+	          <h4 class="modal-title">Delete Dataset Twitter</h4>
+	        </center>
+	        </div>
+	        <div class="modal-body">
+	        <center>
+	        	<form method = "POST">{%csrf_token%}
+	          <p>Apakah anda yakin</p>
+	          <input type= "hidden" name="db_choice" value={{choice}}>
+	          <button type= 'submit' name="deleteDS" class = "btn btn-default">Ya</button>
+	          <button type="button" class="btn btn-default" data-dismiss="modal" style="margin-left: 10px;">Tidak</button>
+	      		</form>
+	        </center>
+	        </div>
+	      </div>
+	    </div>
+	  </div>
+	  <!--/.endmodal-->	
+{% endif %}
+
+	 {%if visualisation == 'GO' %}
+	  <div = 'row'>
+	  <h2>WORD CLOUD</h2>
+	  <img src={% static 'img/graph/twitter/'|add:dbpicked|add:'.jpg' %}>
+	  </div>
+	  {%endif%}
+
+	<script src={% static 'js/bootstrap-table.js' %}></script>
+	<script src={% static 'js/jquery-1.11.1.min.js' %}></script>
+	<script>
+	 $(document).on('click','#checkAll',function () {
+     $('.checkItem').not(this).prop('checked', this.checked);
+ });
+	</script>
+{% endblock %}

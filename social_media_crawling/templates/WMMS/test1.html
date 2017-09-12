@@ -1,0 +1,20 @@
+<form method="POST" enctype="multipart/form-data">{% csrf_token %}
+
+<p>FEATURE : </p><select id='C_feature' name='Cfeature'>
+{% for i in test %}
+	<option value ='{{i}}'>{{i}}</option>
+{% endfor %}
+</select>
+<p> Algorithm :</p><select id='algorthm' name='algorthm'>
+{% for i in test1 %}
+	<option value ='{{i}}'>{{i}}</option>
+{% endfor %}
+</select>
+<br/><br/><br/>
+<textarea rows="4" cols="50" name="comment"></textarea> {{f3.file}}
+<br/>
+<input type="submit" name='analisis' value = "ok">
+
+</form>
+
+{{hasil}}

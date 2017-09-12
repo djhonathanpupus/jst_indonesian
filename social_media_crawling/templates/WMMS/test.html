@@ -1,0 +1,47 @@
+{% extends 'WMMS/header.html' %}
+
+{% block content %}
+<a href='../search'>Crawl</a>
+<a href='../del'>delete</a>
+<center>
+<h2>TEST</h2>
+<form method="POST" enctype="multipart/form-data">{% csrf_token %}
+{{f3}}
+<input type="submit" value = "upload">
+</form>
+<div class = "dropdown">
+	
+</div>
+<table style ="border : 1px solid black">
+<tr>
+{% for a in data %}
+	<th>{{a}}</th>
+{% endfor %}
+</tr>
+		<tr>
+			<td>{{a.NAME}}</td>
+			<td>{{a.TWEET}}</td>
+		</tr>
+	
+</table>
+</center>
+<form method="POST">{% csrf_token %}
+<select id='db_choice' name='data_choice' onchange="this.form.submit()">
+	<option>{{sta}}</option>
+	<option disabled>JSON</option>
+{% for i in test %}
+	<option value ='{{i}}'>{{i}}</option>
+{% endfor %}
+	<option disabled>CSV</option>
+{% for i in test1 %}
+	<option value ='{{i}}'>{{i}}</option>
+{% endfor %}
+</select>
+</form>
+
+<form method="POST">{% csrf_token %}
+<input type ="submit" value = "Analisis" name="TOTM">
+</form>
+
+	
+{% endblock %}

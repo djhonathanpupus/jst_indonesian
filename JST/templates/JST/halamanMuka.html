@@ -1,0 +1,80 @@
+{% extends 'JST/base.html' %}
+
+{% block content %}
+    <div class="container">
+        <ul class="nav nav-tabs col-md-10">
+            <li class="active"><a data-toggle="tab" href="#JST">JST Menu</a></li>
+            <li><a data-toggle="tab" href="#Formalisasi">Formalisasi</a> </li>
+            <li><a data-toggle="tab" href="#Sentimen">Sentimen</a> </li>
+            <li><a data-toggle="tab" href="#Pelabelan">Pelabelan Manual</a> </li>
+        </ul>
+
+        <div class="tab-content">
+            <div id="JST" class="tab-pane fade in active">
+                <div class="col-md-10">
+                <p>
+                    <br>
+                    JST merupakan salah satu metode analisa sentimen yang full unsupervised. Hal ini diakibatkan karena
+                    metode ini menggunakan prior masing - masing kata dari teks yang dilakukan analisis. Metode ini
+                    diharapkan dapat menjadi salah satu dalam pencarian untuk menggunakan metode yang lebih baik
+                </p>
+                <p>
+                    Dalam kesempatan ini penulis pengharap aplikasi ini dapat membantu perkembangan penelitian mengenai
+                    NLTK untuk bahasa Indonesia
+                </p>
+                <p>
+                    <br>
+                </p>
+                <div class="row">
+                    <p><br></p>
+                    <a href="{% url 'JST:previewMI' %}" class="btn btn-primary btn-md pull-right" role="button">Lanjut ke JST</a>
+                </div>
+                </div>
+            </div>
+
+            <div id="Formalisasi" class="tab-pane fade">
+                <div class="col-md-10">
+                <p>
+                    <br>
+                    Formalisasi dilakukan terhadap kata - kata yang memiliki bentuk yang informal. Hal ini dilakukan
+                    sebelum proses untuk meminimalkan penggunaan kata - kata sebelum melakukan proses. Penggunaan
+                    kata - kata informal sangat banyak terjadi pada teks - teks berteksur sedikit, seperti microblog.
+                <p>
+                    <br>
+                </p>
+                <a href="{% url 'JST:inputDataFormalisasi' %}" class="btn btn-primary btn-md pull-right" role="button">Lanjut ke Formalisasi Kata</a>
+                </div>
+            </div>
+
+            <div id="Sentimen" class="tab-pane fade">
+                <div class="col-md-10">
+                <p>
+                    <br>
+                    JST merupakan metode analisis sentimen yang menggunakan peluang prior dari kata. Setiap kata
+                    memiliki polaritas berupa positive, negative, dan subjektif. Materi ini diperkenalkan pada website
+                    sentiword.net pada penelitian kata - kata terhadap bahasa inggris. Untuk Bahasa Indonesia dapat
+                    dilihat dari contributor masing - masing aplikasi yang dibentuk ini
+                <p>
+                    <br>
+                </p>
+                <a href="{% url 'JST:inputDataSentimen' %}" class="btn btn-primary btn-md pull-right" role="button">Lanjut ke Sentimenisasi Kata</a>
+                </div>
+            </div>
+
+            <div id="Pelabelan" class="tab-pane fade">
+                <div class="col-md-10">
+                <p>
+                    <br>
+                    Menu ini digunakan untuk membantu pelabelan dokumen yang memiliki sentimen. Dokumen akan diberikan
+                    label "1" jika dinyatakan positif dan "2" bila negatif. Hal ini dilakukan untuk membantu pengujian
+                    dokumen yang ada. Selain sentimen, dokumen diberikan nilai untuk spam dari dokumen yang ada.
+                <p>
+                    <br>
+                </p>
+                <a href="{% url 'JST:inputDataPelabelan' %}" class="btn btn-primary btn-md pull-right" role="button">Lanjut ke Pelabelan Dokumen</a>
+            </div>
+            </div>
+        </div>
+
+    </div>
+{% endblock %}

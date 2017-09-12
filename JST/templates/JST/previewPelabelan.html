@@ -1,0 +1,182 @@
+{% extends 'JST/base.html' %}
+
+{% block content %}
+    <style>
+    table {
+        width: 100%;
+        margin-bottom: 30px;
+    }
+
+    thead, tbody, tr, td, th { display: block; }
+
+    tr:after {
+        content: ' ';
+        display: block;
+        visibility: hidden;
+        clear: both;
+    }
+
+    thead th {
+        height: 30px;
+
+        /*text-align: left;*/
+    }
+
+    tbody {
+        height: 400px;
+        overflow-y: auto;
+    }
+
+    thead {
+        /* fallback */
+    }
+
+
+    tbody td, thead th {
+        float: left;
+    }
+    input[type='text'] {
+        margin: 0!important;
+        border: 0 !important;
+        width: 100% !important;
+        border-radius: 0 !important;
+        line-height: 1 !important;
+    }
+    button{
+    background:#eeeeee;
+    cursor:pointer;
+    }
+    .radio{
+        margin-bottom: 1px;
+    }
+    #Unduh {
+        margin-right: 5px;
+    }
+    textarea{
+        margin: 0;
+    }
+    </style>
+
+    <div class="container">
+    <form action="{% url 'JST:simpanPelabelan' %}" method="post" enctype="multipart/form-data">
+{% csrf_token %}
+    <div class="table-responsive col-md-9">
+        <table class='table table-striped table-hover table-condensed'>
+            <tbody style="height: 80px; width: 100%">
+            <tr>
+                <td width="20%">
+                    <strong>Nama Dokumen</strong>
+                </td>
+                <td width="80%">
+                    {{ name }}
+                </td>
+            </tr>
+            <tr>
+                <td width="20%">
+                    <strong>Banyak dokumen</strong>
+                </td>
+                <td width="80%">
+                    <input type="text" name="corpusLength" value="{{ corpusLength }}" readonly>
+                </td>
+            </tr>
+            </tbody>
+        </table>
+    </div>
+
+    <div class="table-responsive col-md-9">
+        <table class="table-striped table-hover table-condensed">
+            <thead>
+            <tr>
+                <th width="5%">NO</th>
+                <th width="70%">Kalimat</th>
+                <th width="25%">Label</th>
+            </tr>
+            </thead>
+            <tbody>
+            {% for key, value in dictKalimat.items %}
+            <tr>
+                <td width="5%">
+                    {{ key }}
+                </td>
+                <td width="70%">
+                    <div class="form-group">
+                        <textarea class="form-control" rows="3" name="kalimat_{{ key }}">{{ value }}</textarea>
+                    </div>
+
+                </td>
+                <td width="25%">
+                    <div class="radio">
+                        <label><input type="radio" name="status_{{ key }}" value="positive" required>Positive</label>
+                    </div>
+                    <div class="radio">
+                        <label><input type="radio" name="status_{{ key }}" value="negative">Negative</label>
+                    </div>
+                    <div class="radio">
+                        <label><input type="radio" name="status_{{ key }}" value="netral">Netral</label>
+                    </div>
+                    <div class="radio">
+                        <label><input type="radio" name="status_{{ key }}" value="spam">Spam</label>
+                    </div>
+                </td>
+            </tr>
+            {% endfor %}
+            </tbody>
+        </table>
+    </div>
+
+    <!--
+    <div class="bodycontainer scrollable">
+        <table class="table-striped table-hover table-condensed">
+            <tbody>
+            {% for key, value in dictKalimat.items %}
+            <tr>
+                <td>
+                    {{ key }}
+                </td>
+                <td>
+                    <div class="form-group">
+                        <textarea class="form-control" rows="5" name="kalimat_{{ key }}">{{ value }}</textarea>
+                    </div>
+
+                </td>
+                <td>
+                    <div class="radio">
+                        <label><input type="radio" name="status_{{ key }}" value="positive" required>Positive</label>
+                    </div>
+                    <div class="radio">
+                        <label><input type="radio" name="status_{{ key }}" value="negative">Negative</label>
+                    </div>
+                    <div class="radio">
+                        <label><input type="radio" name="status_{{ key }}" value="netral">Netral</label>
+                    </div>
+                    <div class="radio">
+                        <label><input type="radio" name="status_{{ key }}" value="spam">Spam</label>
+                    </div>
+                </td>
+            </tr>
+            {% endfor %}
+            </tbody>
+        </table>
+    </div>
+    -->
+    <div class="row col-md-9">
+        <p>
+            <br>
+        </p>
+    </div>
+
+	<div class="row col-md-9" id="Unduh">
+	    <div class="radio-inline" style="margin-left: 30px;">
+            <label><input type="radio" name="unduhFile" value="label" required>Unduh Label</label>
+        </div>
+        <div class="radio-inline">
+            <label><input type="radio" name="unduhFile" value="dataset">Unduh Dataset</label>
+        </div>
+        <div class="radio-inline">
+            <label><input type="radio" name="unduhFile" value="full">Unduh Semua</label>
+        </div>
+	<button type="submit" class="btn btn-primary btn-md pull-right">Unduh File</button
+  	</div>
+</form>
+    </div>
+{% endblock %}

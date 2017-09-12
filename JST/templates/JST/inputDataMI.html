@@ -1,0 +1,106 @@
+{% extends 'JST/base.html' %}
+
+{% block content %}
+    <style>
+        td {
+            margin: 1px !important;
+            padding: 10px !important;
+        }
+        .radio-inline {
+            margin-right: 10px;
+        }
+    </style>
+    <div class="container">
+        <h1><a href="{% url 'JST:halamanMuka' %}">JST Modul</a> </h1>
+    </div>
+
+    <div class="container">
+	    <form method="post" enctype="multipart/form-data" id="formDataJST" action="{% url 'JST:previewMI' %}">
+        {% csrf_token %}
+            <div class="row">
+            <h4>Masukkan File yang Diuji</h4>
+            </div>
+            <div class="row" style="margin-bottom: 20px;">
+                <div class="col-md-10">
+                    <div class="input-group">
+              <span class="input-group-btn">
+                  <span class="btn btn-primary" onclick="$(this).parent().find('input[type=file]').click();">Browse</span>
+                  <input id="dataset" name="dataset" class="hidden" onchange="$(this).parent().parent().find('.form-control').html($(this).val().split(/[\\|/]/).pop());" style="display: none;" type="file" required>
+              </span>
+              <span class="form-control"></span>
+            </div>
+                </div>
+            </div>
+
+            <div class="row" id="MIstatus" style="margin-top: 20px;">
+                <div class="col-md-10">
+                    <div class="col-md-4">
+                        <strong>Gunakan Mutual Information <a  id="popoverMI" href="#" data-content="Mutual Information kumpulan kata yang memiliki bobot informasi yang besar terhadap corpus/kumpulan dokumen" rel="popover" data-placement="bottom" data-original-title="Mutual Information" class="btn btn-circle-micro btn-primary"><span class="glyphicon glyphicon-info-sign"></span></a> :</strong>        
+                    </div>
+                    <div class="col-md-4">
+                        <label class="radio-inline">
+                            <input type="radio" name="statusMI" value="yes" required>Ya
+                        </label>
+                        <label class="radio-inline">
+                            <input type="radio" name="statusMI" value="no" checked="checked">No
+                        </label>
+                    </div>
+                </div>
+            </div>
+
+            <div class="row" id="MIwords" style="margin-top: 20px;display: none">
+                <div class="col-md-10">
+                    <div class="col-md-4">
+                        <strong>Jumlah Mutual Information:</strong>
+                    </div>
+                    <div class="col-md-4">
+                        <input type="text" id="vocabSize" name="vocabSize" value="0" style="padding:3px;margin-left: 0px;border-radius: 2px;background-color: #ffffff;width: 90px;" required>
+                    </div>
+                </div>
+            </div>
+
+            <div class="row" id="MIstopwords" style="margin-top: 20px;display: none">
+                <div class="col-md-10">
+                    <div class="col-md-4">
+                        <strong>Gunakan Stopwords untuk MI <a  id="popoverStopword" href="#" data-original-title="Stopword removal" data-content="Menghilangkan kata - kata stopword pada hasil ekstraksi mutual information" rel="popover" data-placement="bottom"  class="btn btn-circle-micro btn-primary"><span class="glyphicon glyphicon-info-sign"></span></a> :</strong>
+                    </div>
+                    <div class="col-md-4">
+                        <label class="radio-inline">
+                            <input type="radio" name="stopwords" value="yes">Ya
+                        </label>
+                        <label class="radio-inline">
+                            <input type="radio" name="stopwords" value="no" checked="checked">No
+                        </label>
+                    </div>
+                </div>
+            </div>
+
+            <div class="row" style="margin-top: 40px;">
+                <div class="col-md-10">
+                     <button type="submit" class="btn btn-primary btn-md pull-left">Lanjut ke Proses JST MI</button>
+                </div>
+            </div>
+  	    </form>
+    </div>
+{% endblock %}
+{% block js %}
+    <script>
+        $('#popoverMI').popover({ trigger: "hover" });
+        $('#popoverStopword').popover({ trigger: "hover" });
+        $(document).ready(function () {
+            $("input[name='statusMI']:radio").change(function () {
+                var value = $(this).val();
+                if(value == 'yes'){
+                    $('#MIwords').show(1000);
+                    $('#MIstopwords').show(1000);
+                }else {
+                    $('#MIwords').hide(1000);
+                    $('#MIstopwords').hide(1000);
+                    $('#vocabSize').val('0');
+
+                }
+            })
+        });
+    </script>
+{% endblock %}
+

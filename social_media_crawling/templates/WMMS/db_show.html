@@ -1,0 +1,24 @@
+{% extends 'WMMS/header.html' %}
+
+{% block content %}
+<a href='../search'>Crawl</a>
+<a href='../del'>delete</a>
+<center>
+<h2>TEST</h2>
+<table style ="border : 1px solid black">
+<tr>
+	<th>tanggal</th>
+	<th>nama</th>
+	<th>content</th>
+</tr>
+	{% for post in object_list %}
+		<tr>
+			<td>{{post.c_at}}</td>
+			<td>{{post.name}}</td>
+			<td>{{post.content}}</td>
+		</tr>
+	{% endfor %}
+</table>
+</center>
+
+{% endblock %}

@@ -1,0 +1,32 @@
+{% extends 'WMMS/base.html' %}
+
+{% block content %}
+{% load staticfiles %}
+<h2>WORD CLOUD</h2>
+<img src={% static 'img/graph/facebookWordCloud2.jpg'%}>
+
+
+
+<h2>TOP SHARE USER</h2>
+
+<table data-toggle="table" data-url="true"  data-show-refresh="true" data-show-toggle="true" data-show-columns="true" data-search="false" data-select-item-name="toolbar1" data-pagination="false" data-sort-name="user" data-sort-order="user">
+	<thead>
+	<tr>
+		<th data-field="user" data-sortable="true">USER</th>
+		<th data-field="count" data-sortable="true">COUNT</th>
+	</tr>
+	</thead>
+	<tbody>
+
+	{% for a in user %}
+	<tr>
+		{% for b in a %}
+		<td>{{b}}</td>
+		{% endfor %}
+	</tr>
+	{% endfor %}
+	</tbody>
+</table>
+
+<script src={% static 'js/bootstrap-table.js' %}></script>
+{% endblock %}

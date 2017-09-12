@@ -1,0 +1,248 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>WMSS - Crawling</title>
+
+<link href="css/bootstrap.min.css" rel="stylesheet">
+<link href="css/datepicker3.css" rel="stylesheet">
+<link href="css/styles.css" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css?family=Montserrat:400,700" rel="stylesheet" type="text/css">
+    <link href='https://fonts.googleapis.com/css?family=Kaushan+Script' rel='stylesheet' type='text/css'>
+    <link href='https://fonts.googleapis.com/css?family=Droid+Serif:400,700,400italic,700italic' rel='stylesheet' type='text/css'>
+    <link href='https://fonts.googleapis.com/css?family=Roboto+Slab:400,100,300,700' rel='stylesheet' type='text/css'>
+
+
+<!--Icons-->
+<script src="js/lumino.glyphs.js"></script>
+
+<!--[if lt IE 9]>
+<script src="js/html5shiv.js"></script>
+<script src="js/respond.min.js"></script>
+<![endif]-->
+
+</head>
+
+<body>
+	<nav class="navbar navbar-inverse navbar-fixed-top" role="navigation">
+		<div class="container-fluid">
+			<div class="navbar-header">
+				<button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#sidebar-collapse">
+					<span class="sr-only">Toggle navigation</span>
+					<span class="icon-bar"></span>
+					<span class="icon-bar"></span>
+					<span class="icon-bar"></span>
+				</button>
+				<a class="navbar-brand" href="index.html"><span class="glyphicon glyphicon-stats"></span>&nbsp;<span>WM</span>SS</a>
+				<ul class="user-menu">
+					<li class="dropdown pull-right">
+						<a href="#" class="dropdown-toggle" data-toggle="dropdown"><svg class="glyph stroked male-user"><use xlink:href="#stroked-male-user"></use></svg> User <span class="caret"></span></a>
+						<ul class="dropdown-menu" role="menu">
+							<li><a href="#"><svg class="glyph stroked male-user"><use xlink:href="#stroked-male-user"></use></svg> Profile</a></li>
+							<li><a href="#"><svg class="glyph stroked gear"><use xlink:href="#stroked-gear"></use></svg> Settings</a></li>
+							<li><a href="#"><svg class="glyph stroked cancel"><use xlink:href="#stroked-cancel"></use></svg> Logout</a></li>
+						</ul>
+					</li>
+				</ul>
+			</div>
+							
+		</div><!-- /.container-fluid -->
+	</nav>
+		
+	<div id="sidebar-collapse" class="col-sm-3 col-lg-2 sidebar">		
+		<ul class="nav menu">				
+				
+			<li class="list-group-item" style="border:none; color:#30a5ff;"><strong> Crawling</strong></li>
+			
+			<li class="active"><a href="crawling.html"><svg class="glyph stroked camera"><use xlink:href="#stroked-camera"></use></svg>Web Crawling</a></li>
+			<li><a href="crawling.html"><svg class="glyph stroked camera"><use xlink:href="#stroked-camera"></use></svg>Social Media Crawling</a></li>
+			<li role="presentation" class="divider"></li>
+			<li class="list-group-item" style="border:none; color:#30a5ff;"><strong>Preprocessing</strong></li>
+			
+			<li><a href="preprocessing.html"><svg class="glyph stroked hourglass"><use xlink:href="#stroked-hourglass"></use></svg> Stemming</a></li>
+			<li><a href="preprocessing.html"><svg class="glyph stroked hourglass"><use xlink:href="#stroked-hourglass"></use></svg> Stocking</a></li>
+			<li role="presentation" class="divider"></li>
+			<li class="parent">
+				<a href="#">
+					<span data-toggle="collapse" href="#sub-item-1"><svg class="glyph stroked line-graph"><use xlink:href="#stroked-line-graph"></use></svg> Analysis </span>
+				</a>
+				<ul class="children collapse" id="sub-item-1">
+					<li>
+						<a class="" href="#">
+							<svg class="glyph stroked chevron-right"><use xlink:href="#stroked-chevron-right"></use></svg> TOTM
+						</a>
+					</li>
+					<li>
+						<a class="" href="#">
+							<svg class="glyph stroked chevron-right"><use xlink:href="#stroked-chevron-right"></use></svg> SVM
+						</a>
+					</li>
+					<li>
+						<a class="" href="#">
+							<svg class="glyph stroked chevron-right"><use xlink:href="#stroked-chevron-right"></use></svg> Mind Map Generator
+						</a>
+					</li>
+				</ul>
+			</li>
+			<li role="presentation" class="divider"></li>
+			<li><a href="login.html"><svg class="glyph stroked male-user"><use xlink:href="#stroked-male-user"></use></svg> Login Page</a></li>
+		</ul>
+		
+	</div><!--/.sidebar-->
+		
+	<div class="col-sm-9 col-sm-offset-3 col-lg-10 col-lg-offset-2 main">		
+		<div class="row">
+			<ol class="breadcrumb">
+				<li><a href="#"><svg class="glyph stroked home"><use xlink:href="#stroked-home"></use></svg></a></li>
+				<li class="active">Icons</li>
+			</ol>
+		</div><!--/.row-->
+		
+		<div class="row">
+			<div class="col-lg-12">				
+				<h1 class="page-header"> Web Crawling</h1>
+			</div>
+		</div><!--/.row-->
+
+		  <div class="row">
+                    <div class="col-sm-12">
+                    <div class="alert alert-info">
+                    <h2 class="page-header">
+                        Lakukan <strong> PENCARIAN DATA </strong> mulai dari <strong>SINI</strong> . . .
+                    </h2>
+                    </div>
+                    </div>
+                </div>
+
+		<div class="row">
+			<div class="col-md-6">
+				<div class="panel panel-default">
+					<div class="panel-body tabs">
+						<ul class="nav nav-tabs">
+							<li class="active"><a href="#tab1" data-toggle="tab">By Keyword</a></li>
+							<li><a href="#tab2" data-toggle="tab">By Element</a></li>
+							<li><a href="#tab3" data-toggle="tab">Import Data</a></li>
+						</ul>
+		
+						<div class="tab-content">
+							<div class="tab-pane fade in active" id="tab1">
+								<h4>Keyword</h4>
+								<form role="form">
+									<div class="form-group">
+										<label>URL</label>
+										<input class="form-control" placeholder="Input URL">
+									</div>
+									<div class="form-group">
+										<label>Keyword</label>
+										<input class="form-control" placeholder="Input Keyword">
+									</div>
+									<button type="submit" class="btn btn-primary">Search</button>
+								</form>
+							</div>
+							<div class="tab-pane fade" id="tab2">
+								<h4>Element</h4>
+								<form role="form">
+								<div class="form-group">
+									<label>URL</label>
+									<input class="form-control" placeholder="Input URL">
+								</div>
+								<div class="form-group">
+									<label>Available Elements</label>
+									<select multiple class="form-control">
+										<option>Body</option>
+										<option>Head</option>
+										<option>Date</option>
+										<option>Title</option>
+									</select>
+								</div>
+								<button type="submit" class="btn btn-primary">Select</button>
+								</form>
+							</div>
+							<div class="tab-pane fade" id="tab3">
+								<h4>Import Data</h4>
+								<p>Import Your .csv, .xls, .JSON Data</p>
+								<form role="form">
+								<div class="form-group">
+									<label>File input</label>
+									<input type="file">
+									<p class="help-block">*file must be less than 100MB</p>
+								</div>
+								</form>
+							</div>
+						</div>
+					</div>
+				</div><!--/.panel-->
+			</div><!--/.col-->
+
+			<div class="col-md-6">
+				<div class="panel panel-default">
+					<div class="panel-heading">Preview Data</div>
+					<div class="panel-body">
+						<table data-toggle="table" data-url="tables/data1.json"  data-show-refresh="true" data-show-toggle="true" data-show-columns="true" data-search="true" data-select-item-name="toolbar1" data-pagination="true" data-sort-name="name" data-sort-order="desc">
+						    <thead>
+						    <tr>
+						        <th data-field="state" data-checkbox="true" >No</th>
+						        <th data-field="id" data-sortable="true">Title</th>
+						        <th data-field="name"  data-sortable="true">Content</th>
+						        <th data-field="price" data-sortable="true">Date</th>
+						    </tr>
+						    </thead>
+						</table>
+						<form role="form">
+						<div class="form-group">
+									<label>Save Data As</label>
+									<div class="checkbox">
+										<label>
+											<input type="checkbox" value="">CSV
+										</label>
+									</div>
+									<div class="checkbox">
+										<label>
+											<input type="checkbox" value="">JSON
+										</label>
+									</div>
+									<div class="checkbox">
+										<label>
+											<input type="checkbox" value="">XLS
+										</label>									
+									</div>
+						</div>
+						<button type="submit" class="btn btn-primary">Save</button>
+						</form>
+					</div>
+				</div>
+			</div>
+		
+	</div>	<!--/.main-->
+		  
+
+	<script src="js/jquery-1.11.1.min.js"></script>
+	<script src="js/bootstrap.min.js"></script>
+	<script src="js/chart.min.js"></script>
+	<script src="js/chart-data.js"></script>
+	<script src="js/easypiechart.js"></script>
+	<script src="js/easypiechart-data.js"></script>
+	<script src="js/bootstrap-datepicker.js"></script>
+	<script src="js/bootstrap-table.js"></script>
+	<script>
+		$('#calendar').datepicker({
+		});
+
+		!function ($) {
+		    $(document).on("click","ul.nav li.parent > a > span.icon", function(){          
+		        $(this).find('em:first').toggleClass("glyphicon-minus");      
+		    }); 
+		    $(".sidebar span.icon").find('em:first').addClass("glyphicon-plus");
+		}(window.jQuery);
+
+		$(window).on('resize', function () {
+		  if ($(window).width() > 768) $('#sidebar-collapse').collapse('show')
+		})
+		$(window).on('resize', function () {
+		  if ($(window).width() <= 767) $('#sidebar-collapse').collapse('hide')
+		})
+	</script>	
+</body>
+
+</html>

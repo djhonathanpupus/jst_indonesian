@@ -1,0 +1,46 @@
+<html>
+	<head>
+	<style> 
+	.flex-container {
+	    display: -webkit-flex;
+	    display: flex;  
+	    -webkit-flex-flow: row wrap;
+	    flex-flow: row wrap;
+	    text-align: center;
+	}
+	
+	.flex-container > * {
+	    padding: 15px;
+	    -webkit-flex: 1 100%;
+	    flex: 1 100%;
+	}
+			
+	.article {
+	    text-align: left;
+	}
+	
+	header {background: black;color:white;}
+	footer {background: #aaa;color:white;}
+		
+	@media all and (min-width: 768px) {
+	    .article {-webkit-flex:5 0px;flex:5 0px;-webkit-order:2;order:2;}
+	    footer {-webkit-order:3;order:3;}
+	}
+	</style>
+	
+	
+	</head>
+
+	<body>
+	<div class = flex-container>
+		<header>WMSS</header>
+		<article class = 'article'>
+		<div>
+			{% block content %}
+			{% endblock %}
+		</div>
+		</article>
+		<footer>KS 2016/2017</footer>
+	</div>
+	</body>
+</html>

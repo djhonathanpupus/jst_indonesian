@@ -1,0 +1,998 @@
+{% extends 'JST/base.html' %}
+{% load apptags %}
+{% load staticfiles %}
+
+{% block css %}
+{#    <link rel="stylesheet" href="{% static 'css/jqcloud.min.css' %}">#}
+    <style>
+        .bodycontainer {
+            width: 100%;
+            margin: 0;
+            overflow-y: auto;
+        }
+        input[type='text']{
+            width: 100%;
+            border: 0;
+            margin: 0;
+        }
+        tr{
+            height: 20px;
+        }
+
+        select {
+            width: 300px;
+            margin-left: 20px;
+            display: block;
+            border-radius: 2px;
+        }
+
+        #sentimenSimulasi {
+          height: 30px;
+          border: 2px;
+        }
+        #positiveTopic{
+            width: 80%;
+        }
+
+    </style>
+    <style>
+        .group {
+            cursor: pointer;
+        }
+
+        .arc {
+            stroke: #FFF;
+            stroke-width: 3px;
+        }
+
+        .arc.hover {
+            fill: #C66;
+            stroke-width: 0;
+        }
+
+        .name {
+            text-anchor: middle;
+        }
+
+        .name.hover {
+            fill: #C66;
+        }
+
+        .line {
+            stroke: #C70;
+        }
+
+        .line.hover {
+            stroke: #C66;
+            stroke-width: 3px;
+        }
+
+        .heading {
+            fill: #C70;
+            font-size: 2.2em;
+            text-anchor: middle;
+        }
+
+        .count {
+            fill: #FA0;
+            font-size: 1.6em;
+            text-anchor: middle;
+        }
+
+        .heading.hover,
+        .count.hover {
+            fill: #C66;
+        }
+
+        .arc,
+        .line,
+        .name {
+            transition: all 250ms ease;
+        }
+    </style>
+{% endblock %}
+
+{% block content %}
+    <div class="container">
+        <h4><a href="{% url 'JST:halamanMuka' %}">JST Modul</a> </h4>
+    </div>
+
+    <div class="container">
+    <form>
+    <div class="row">
+        <div class="row col-md-10">
+            <div class="panel-group" id="accordion">
+                <!-- Accordion kedua Summary Proses-->
+                <div class="panel panel-default">
+                    <div class="panel-heading">
+                        <h4 class="panel-title">
+                            <a data-toggle="collapse" data-parent="#accordion" href="#collapseTwo"><span class="glyphicon glyphicon-file">
+                            </span>Summary Test <a  id="popoverSummary" href="#" data-content="Berisi rangkuman dari proses pemodelan JST berdasarkan input variabel indikator yang dimauskkan sebelumnya" rel="popover" data-placement="bottom" data-original-title="Summary Test" class="btn btn-circle-micro btn-primary"><span class="glyphicon glyphicon-info-sign"></span></a> </a>
+                        </h4>
+                    </div>
+                    <div id="collapseTwo" class="panel-collapse collapse">
+                        <div class="panel-body">
+                            <!-- Isi bagian accordion -->
+                            <div class="table-responsive" id="tabelSummary">
+                                <table class='table table-striped table-hover table-condensed'>
+                                    <tbody>
+                                    <tr>
+                                        <th width="20%">
+                                            Nama Dokumen
+                                        </th>
+                                        <td>
+                                            <input type="text" name="namaCorpus" value="{{ name }}" readonly>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <th width="20%">
+                                            Hyperparameter (&alpha;, &beta;, &gamma;)
+                                        </th>
+                                        <td>
+                                            <input type="text" name="lexiconStatus" value="{{ hyperparameters }}" readonly>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <th width="20%">
+                                            Banyak Topik Inisialisasi
+                                        </th>
+                                        <td>
+                                            <input type="text" name="topics" value="{{ topics }}" readonly>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <th width="20%">
+                                            Banyak Dokumen
+                                        </th>
+                                        <td>
+                                            <input type="text" name="lengthCorpus" value="{{ corpusLength }}" readonly>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <th width="20%">
+                                            Gunakan Stopwords
+                                        </th>
+                                        <td>
+                                            <input type="text" name="stopwordsStatus" value="{{ stopwordsStatus }}" readonly>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <th width="20%">
+                                            Status Subjectivity Lexicon
+                                        </th>
+                                        <td>
+                                            <input type="text" name="lexiconStatus" value="{{ lexiconStatus }}" readonly>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <th width="20%">
+                                            Vocab Size
+                                        </th>
+                                        <td>
+                                            <input type="text" name="lexiconStatus" value="{{ vocabSize }}" readonly>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <th width="20%">
+                                            Corpus Size
+                                        </th>
+                                        <td>
+                                            <input type="text" name="lexiconStatus" value="{{ corpusSize }}" readonly>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <th width="20%">
+                                            Average Doc Size
+                                        </th>
+                                        <td>
+                                            <input type="text" name="lexiconStatus" value="{{ aveDocSize }}" readonly>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <th width="20%">
+                                            Prior Labeled Word
+                                        </th>
+                                        <td>
+                                            <input type="text" name="lexiconStatus" value="{{ priorLabeled }}" readonly>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <th width="20%">
+                                            Banyak Iterasi Gibbs
+                                        </th>
+                                        <td>
+                                            <input type="text" name="priorLabeled" value="{{ iterasiGibbs }}" readonly>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <th width="20%">
+                                            Banyak Perulangan Simulasi
+                                        </th>
+                                        <td>
+                                            <input type="text" name="priorLabeled" value="{{ iterasiSimulasi }}" readonly>
+                                        </td>
+                                    </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                            <!-- Akhir isi bagian accordion -->
+                        </div>
+                    </div>
+                </div>
+                <!-- Accordion keenam Sentimen Dokumen-->
+                <div class="panel panel-default">
+                    <div class="panel-heading">
+                        <h4 class="panel-title">
+                            <a data-toggle="collapse" data-parent="#accordion" href="#collapseSix"><span class="glyphicon glyphicon-file">
+                            </span>Hasil Sentimen Documents <a  id="popoverDokumen" href="#" data-content="Sentimen tiap dokumen diukur berdasarkan nilai dari proporsi jumlah kata positif dan kata negatif terhadap keseluruhan kata pada tiap dokumen" rel="popover" data-placement="bottom" data-original-title="Hasil Sentimen tiap Dokumen (Phi)" class="btn btn-circle-micro btn-primary"><span class="glyphicon glyphicon-info-sign"></span></a></a>
+                        </h4>
+                    </div>
+                    <div id="collapseSix" class="panel-collapse collapse">
+                        <div class="panel-body">
+                            <!-- Isi bagian accordion -->
+
+                            <div class="containter">
+                            <div class="row">
+                                <div class="col-md-6">
+                                <div class="table-responsive">
+                                        <table class='table table-striped table-hover table-condensed' width="100%">
+                                            <thead>
+                                            <tr>
+                                                <th width="80%">
+                                                    Dokumen
+                                                </th>
+                                                <th width="20%">
+                                                    Kesimpulan
+                                                </th>
+                                            </tr>
+                                            </thead>
+                                        </table>
+                                </div>
+                                <div class="table-responsive">
+                                <div class="bodycontainer scrollable" style="max-height: 400px;">
+                                 <table class='table table-striped table-hover table-condensed' width="100%">
+                                    <tbody>
+                                    {% for key in corpusLength|get_range %}
+                                        <tr>
+                                            <td width="80%">
+                                                <input type="text" name="kalimat_{{ key }}" id="document_{{ key }}" value="" readonly>
+                                            </td>
+                                            <td width="20%">
+                                                <button class="btn btn-success btn-sm pull-right" id="kesimpulan_{{ key }}" onclick="showSimulasi(event, {{ key }})">Show</button>
+                                            </td>
+                                        </tr>
+                                    {% endfor %}
+                                    </tbody>
+                                </table>
+                                </div>
+                                </div>
+                                </div>
+                                <div class="col-md-6">
+                                    <div class="panel panel-info">
+                                        <div class="panel-heading" style="max-height: 50px;font-size: 15px;"><strong>Kesimpulan</strong></div>
+                                        <div class="panel-body">
+                                        <div class="form-group">
+                                          <label for="kalimatTeks">Kalimat : </label>
+                                          <textarea class="form-control" rows="3" id="kalimatTeks" ></textarea>
+                                        </div>
+                                            <div class="table-responsive">
+                                                <table class='table table-striped table-hover table-condensed' width="100%">
+                                                <thead>
+
+                                                    <tr>
+                                                        <th width="20%">
+                                                            Simulasi ke -
+                                                        </th>
+                                                        <th width="30%">
+                                                            Prob Positive
+                                                        </th>
+                                                        <th width="30%">
+                                                            Prob Negative
+                                                        </th>
+                                                        <th width="20%">
+                                                            Hasil
+                                                        </th>
+                                                    </tr>
+                                                </thead>
+                                                </table>
+                                            </div>
+                                                <div class="table-responsive">
+                                                <div class="bodycontainer scrollable" style="max-height: 150px;">
+                                                <table class='table table-striped table-hover table-condensed' width="100%">
+                                                <tbody>
+                                                    {% for i in iterasiSimulasi|get_range %}
+                                                        <tr>
+                                                            <td width="20%">
+                                                                <input type="text" name="simulasiIterasi_{{ i }}" id="simulasiIterasi_{{ i }}" value="" readonly>
+                                                            </td>
+                                                            <td width="30%">
+                                                                <input type="text" name="positiveIterasi_{{ i }}" id="positiveIterasi_{{ i }}" value="" readonly>
+                                                            </td>
+                                                            <td width="30%">
+                                                                <input type="text" name="negativeIterasi_{{ i }}" id="negativeIterasi_{{ i }}" value="" readonly>
+                                                            </td>
+                                                            <td width="20%">
+                                                                <input type="text" name="hasilIterasi_{{ i }}" id="hasilIterasi_{{ i }}" value="" readonly>
+                                                            </td>
+                                                        </tr>
+                                                    {% endfor %}
+                                                    </tbody>
+                                                </table>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            </div>
+
+                            <!-- Akhir isi bagian accordion -->
+                        </div>
+                    </div>
+                </div>
+                <!-- Accordion pertama Sentimen Corpus-->
+                <div class="panel panel-default">
+                    <div class="panel-heading">
+                        <h4 class="panel-title">
+                            <a data-toggle="collapse" data-parent="#accordion" href="#collapseOne"><span class="glyphicon glyphicon-file">
+                            </span>Hasil Sentiment Corpus <a  id="popoverCorpus" href="#" data-content="Digambarkan dengan diagram pie chart berdasarkan jumlah dokumen sentimen positif, jumlah dokumen negatif, dan objektif (keadaan kata positif sama dengan kata negatif)" rel="popover" data-placement="bottom" data-original-title="Persentase Hasil Sentimen Keseluruhan Corpus" class="btn btn-circle-micro btn-primary"><span class="glyphicon glyphicon-info-sign"></span></a></a>
+                        </h4>
+                    </div>
+                    <div id="collapseOne" class="panel-collapse collapse">
+                        <div class="panel-body">
+                            <div class="container">
+                            <div class="row">
+                                <div class="col-md-12">
+                                <div class="styled-select slate">
+                                  <select id="sentimenSimulasi">
+                                    <option disabled selected value> -- pilih simulasi -- </option>
+                                      {% for key in iterasiSimulasi|get_range %}
+                                          <option value="{{ key }}">Persentase Sentimen Untuk Simulasi ke - {{ key|add:1 }}</option>
+                                      {% endfor %}
+                                  </select>
+                                </div>
+                                </div>
+                            </div>
+                            <div class="row">
+                                    <div class="col-md-12">
+                                        <div id="container" class="sentimenCorpus"></div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <!-- Accordion kelima Topik Sentimen-->
+                <div class="panel panel-default">
+                    <div class="panel-heading">
+                        <h4 class="panel-title">
+                            <a data-toggle="collapse" data-parent="#accordion" href="#collapseFive"><span class="glyphicon glyphicon-file">
+                            </span>Topik Sentimen <a  id="popoverTopik" href="#" data-content="Cluster dari topik laten yang dibagi berdasarkan label sentimen (sentimen negatif : merah; sentimen positif : bitu)" rel="popover" data-placement="bottom" data-original-title="Sentimen Topik" class="btn btn-circle-micro btn-primary"><span class="glyphicon glyphicon-info-sign"></span></a></a>
+                        </h4>
+                    </div>
+                    <div id="collapseFive" class="panel-collapse collapse">
+                        <div class="panel-body">
+                            <!-- Isi bagian accordion -->
+                            <div class="container">
+                            <div class="row">
+                                <div class="col-md-12">
+                                    <div class="styled-select slate" style="margin: 10px;">
+                                  <select id="topikSentimen">
+                                        <option disabled selected value> -- pilih simulasi -- </option>
+                                      {% for key in iterasiSimulasi|get_range %}
+                                          <option id="topicSimulasi" value="{{ key }}">Topik Sentimen Untuk Simulasi ke - {{ key|add:1 }}</option>
+                                      {% endfor %}
+                                  </select>
+                                </div>
+                                </div>
+                            <br>
+                            </div>
+                            <!-- isinya gambar untuk sentimen topic modeling-->
+                            <div style="overflow-y: scroll;overflow-x: hidden;max-height: 300px;">
+                             {% for key in topics|get_range %}
+                                 <div class="row">
+                                 <div class="col-md-4">
+                                    <p><strong>Topik Sentimen Positive ke - {{ key|add:1 }}</strong></p><br>
+                                    <div class="positiveTopic" id="positiveTopic_{{ key }}">
+                                        <canvas id="testPos_{{ key }}" width="350" height="200" style="border:0;"></canvas>
+                                        <canvas id="cloudPos_{{ key }}" width="350" height="200" style="display: none;"></canvas>
+                                    </div>
+                                     </div>
+                                     <div class="col-md-4">
+                                    <p><strong>Topik Sentimen Negative ke - {{ key|add:1 }}</strong></p><br>
+                                    <div class="negativeTopic" id="negativeTopic_{{ key }}">
+                                        <canvas id="testNeg_{{ key }}" width="350" height="200" style="border:0;"></canvas>
+                                        <canvas id="cloudNeg_{{ key }}" width="350" height="200" style="display: none;"></canvas>
+                                    </div>
+                                     </div>
+                                 </div>
+                                {% endfor %}
+                            </div>
+                            </div>
+
+                            <!-- Akhir isi bagian accordion -->
+                        </div>
+                    </div>
+                </div>
+                <!-- Accordion keempat Prior kata berlabel-->
+                <div class="panel panel-default">
+                    <div class="panel-heading">
+                        <h4 class="panel-title">
+                            <a data-toggle="collapse" data-parent="#accordion" href="#collapseFour"><span class="glyphicon glyphicon-file">
+                            </span>Labeled words <a  id="popoverLabeled" href="#" data-content="Berisi kata - kata memiliki label sentimen yang digunakan di awal berasal dari sentiment lexicon atau mutual information" rel="popover" data-placement="bottom" data-original-title="Kata prior dari Sentiment Lexicon" class="btn btn-circle-micro btn-primary"><span class="glyphicon glyphicon-info-sign"></span></a></a>
+                        </h4>
+                    </div>
+                    <div id="collapseFour" class="panel-collapse collapse">
+                        <div class="panel-body">
+                            <!-- Isi bagian accordion -->
+                        <div class="container">
+                            <div class="row">
+                                <div class="col-md-4">
+                                    <div class="table-responsive">
+                                <table class='table table-striped table-hover table-condensed'>
+                                    <tbody>
+                                    <tr>
+                                        <th>
+                                            Kata Positive Prior
+                                        </th>
+                                    </tr>
+                                    <tr>
+                                        <td>
+                                        <div class="form-group">
+                                          <label for="kalimatTeks"></label>
+                                          <textarea class="form-control" rows="10" id="kalimatTeks" readonly>{% for kata in kataPositive %}{{ kata }}, {% endfor %}</textarea>
+                                        </div>
+                                        </td>
+                                    </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                                </div>
+                                <div class="col-md-4">
+                                    <div class="table-responsive">
+                                <table class='table table-striped table-hover table-condensed'>
+                                    <tbody>
+                                    <tr>
+                                        <th>
+                                            Kata Negative Prior
+                                        </th>
+                                    </tr>
+                                    <tr>
+                                        <td>
+                                        <div class="form-group">
+                                          <label for="kalimatTeks"></label>
+                                          <textarea class="form-control" rows="10" id="kalimatTeks" readonly>{% for kata in kataNegative %}{{ kata }}, {% endfor %}</textarea>
+                                        </div>
+                                        </td>
+                                    </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                                </div>
+                            </div>
+                        <!-- <div class="row">
+                            <textarea rows="10" style="width: 500px;">{{ jsonPositive|safe }}</textarea>
+                        </div> -->
+                        </div>
+                            <!-- Akhir isi bagian accordion -->
+                        </div>
+                    </div>
+                </div>
+                <!-- Accordion ketiga Review Simulasi-->
+                <div class="panel panel-default">
+                    <div class="panel-heading">
+                        <h4 class="panel-title">
+                            <a data-toggle="collapse" data-parent="#accordion" href="#collapseThree"><span class="glyphicon glyphicon-file">
+                            </span>Review Simulasi <a  id="popoverSimulasi" href="#" data-content="Review hasil dari tiap simulasi berdasarkan : hyperparamter, waktu, proporsi sentimen" rel="popover" data-placement="bottom" data-original-title="Simulasi" class="btn btn-circle-micro btn-primary"><span class="glyphicon glyphicon-info-sign"></span></a></a>
+                        </h4>
+                    </div>
+                    <div id="collapseThree" class="panel-collapse collapse">
+                        <div class="panel-body" style="max-height:800px;">
+                            <!-- Isi bagian accordion -->
+                                    {% if dictLabel %}
+                                        <div class="table-responsive" id="tabelSummary">
+                                <table class='table table-striped table-hover table-condensed'>
+                                    <thead>
+                                    <tr>
+                                        <th width="10%">
+                                            Simulasi ke
+                                        </th>
+                                        <th width="15%">
+                                            Akurasi (%)
+                                        </th>
+                                        <th width="15%">
+                                            Waktu Proses (detik)
+                                        </th>
+                                        <th width="15%">
+                                            Positive (%)
+                                        </th>
+                                        <th width="15%">
+                                            Negative (%)
+                                        </th>
+                                        <th width="15%">
+                                            Objektive (%)
+                                        </th>
+                                        <th width="15%">
+                                            &alpha;, &beta;, &gamma;
+                                        </th>
+                                    </tr>
+                                    </thead>
+                                </table>
+                                        </div>
+                                        <div class="table-responsive" id="tabelSummary">
+                                        <div class="bodycontainer scrollable" style="max-height: 600px;">
+                                <table class='table table-striped table-hover table-condensed'>
+                                    <tbody>
+                                    {% for i in iterasiSimulasi|get_range %}
+                                        <tr>
+                                            <th width="10%" id="reviewSimulasi_{{ i }}"></th>
+                                            <td width="15%" id="reviewAkurasi_{{ i }}"></td>
+                                            <td width="15%" id="reviewWaktu_{{ i }}"></td>
+                                            <td width="15%" id="reviewPositive_{{ i }}"></td>
+                                            <td width="15%" id="reviewNegative_{{ i }}"></td>
+                                            <td width="15%" id="reviewObjective_{{ i }}"></td>
+                                            <td width="15%" id="reviewHyperparameter_{{ i }}"></td>
+                                        </tr>
+                                    {% endfor %}
+                                    </tbody>
+                                </table>
+                                        </div>
+                                                                    </div>
+                                {% else %}
+                                        <div class="table-responsive" id="tabelSummary">
+                                            <table class='table table-striped table-hover table-condensed'>
+                                                <thead>
+                                                <tr>
+                                                    <th width="10%">
+                                                        Simulasi ke
+                                                    </th>
+                                                    </th>
+                                                    <th width="15%">
+                                                        Waktu Proses (detik)
+                                                    </th>
+                                                    <th width="15%">
+                                                        Positive (%)
+                                                    </th>
+                                                    <th width="15%">
+                                                        Negative (%)
+                                                    </th>
+                                                    <th width="15%">
+                                                        Objektive (%)
+                                                    </th>
+                                                    <th width="15%">
+                                                        &alpha;, &beta;, &gamma;
+                                                    </th>
+                                                </tr>
+                                                </thead>
+                                            </table>
+                                        </div>
+                                        <div class="table-responsive" id="tabelSummary">
+                                            <div class="bodycontainer scrollable" style="max-height: 600px;">
+                                                <table class='table table-striped table-hover table-condensed'>
+                                                    <tbody>
+                                                    {% for i in iterasiSimulasi|get_range %}
+                                                        <tr>
+                                                            <th width="10%" id="reviewSimulasi_{{ i }}"></th>
+                                                            <td width="15%" id="reviewWaktu_{{ i }}"></td>
+                                                            <td width="15%" id="reviewPositive_{{ i }}"></td>
+                                                            <td width="15%" id="reviewNegative_{{ i }}"></td>
+                                                            <td width="15%" id="reviewObjective_{{ i }}"></td>
+                                                            <td width="15%" id="reviewHyperparameter_{{ i }}"></td>
+                                                        </tr>
+                                                    {% endfor %}
+                                                    </tbody>
+                                    {% endif %}
+                            </table>
+                            </div>
+                            </div>
+                            <!-- Akhir isi bagian accordion -->
+
+                    </div>
+                </div>
+                </div>
+            </div>
+    </div>
+    <!-- <div class="form-group col-md-10">
+    <button type="submit" class="btn btn-primary btn-md pull-right">Proses dan Unduh Hasil</button>
+    </div> -->
+    </div>
+    </form>
+    </div>
+
+
+{% endblock %}
+    {% block js %}
+        <script type="text/javascript" src="{% static 'js/d3.v3.min.js' %}"></script>
+        <!-- Script untuk mengisi akordion review simulasi dari json -->
+        <script type="text/javascript">
+            var jsonReview = {{ jsonReviewSimulasi|safe }};
+            var iterasiSimulasi = parseInt({{ iterasiSimulasi }});
+            for(var i = 0; i < iterasiSimulasi; i++){
+                var simulasi = i + 1;
+                var waktu = parseFloat(jsonReview[i]['waktu']).toFixed(6);
+                var hyperparameter = jsonReview[i]['hyperparameter'];
+                var positive = jsonReview[i]['positive'];
+                var negative = jsonReview[i]['negative'];
+                var objektif = jsonReview[i]['objektif'];
+
+                $('#reviewSimulasi_'+ i ).html(simulasi);
+                $('#reviewWaktu_'+ i ).html(waktu);
+                $('#reviewHyperparameter_'+ i ).html(hyperparameter);
+                $('#reviewPositive_'+ i ).html(positive);
+                $('#reviewNegative_' + i ).html(negative);
+                $('#reviewObjective_'+ i).html(objektif);
+
+                if($('#reviewAkurasi_'+ i).length > 0){
+                    var akurasi = jsonReview[i]['akurasi'];
+                    $('#reviewAkurasi_'+i).html(akurasi);
+                };
+
+            };
+        </script>
+        <!-- Script untuk popover -->
+        <script>
+            $('#popoverSummary').popover({ trigger: "hover" });
+            $('#popoverDokumen').popover({ trigger: "hover" });
+            $('#popoverCorpus').popover({ trigger: "hover" });
+            $('#popoverTopik').popover({ trigger: "hover" });
+            $('#popoverLabeled').popover({ trigger: "hover" });
+            $('#popoverSimulasi').popover({ trigger: "hover" });
+        </script>
+        <!-- Script untuk manipulasi DOM sentimen documents-->
+        <script type="text/javascript">
+        var jsonSimulasi = {{ jsonSimulasi|safe }};
+        var iterasiSimulasi = parseInt({{ iterasiSimulasi }});
+        var numDocs = parseInt({{ corpusLength }});
+
+        for (var i = 0; i< numDocs; i++){
+            $('#document_' + i).val(jsonSimulasi[i]['kalimat']);
+        };
+
+        function showSimulasi(event, numberID) {
+            event.preventDefault();
+            var key = parseInt(numberID);
+
+            var kalimat = jsonSimulasi[key]['kalimat'];
+            $('#kalimatTeks').val(kalimat);
+
+
+            for(var i = 0; i < iterasiSimulasi; i++){
+                var positiveValue = "positive_"+i;
+                var negativeValue = "negative_"+i;
+                var hasilValue = "hasil_"+i;
+
+                var probPositive = parseFloat(jsonSimulasi[key][positiveValue]).toFixed(5);
+                var probNegative = parseFloat(jsonSimulasi[key][negativeValue]).toFixed(5);
+                var probHasil = jsonSimulasi[key][hasilValue];
+
+                $('#simulasiIterasi_' + i).val(i + 1);
+                $('#positiveIterasi_' + i).val(probPositive);
+                $('#negativeIterasi_' + i).val(probNegative);
+                $('#hasilIterasi_' + i).val(probHasil);
+            }
+        };
+        </script>
+        <!--Script untuk membuat chart sentimen corpus dengan d3.js -->
+        <script>
+            var jsonSentimen = {{ jsonSentimen|safe }};
+            $('#sentimenSimulasi').change(function(){
+                $('#container').html('');
+                var key = parseInt($(this).val());
+
+                var positiveSentimen = jsonSentimen[key]['positive'];
+                var negativeSentimen = jsonSentimen[key]['negative'];
+                var objektifSentimen = jsonSentimen[key]['netral'];
+
+                var totalDokumen = (parseInt(positiveSentimen) + parseInt(negativeSentimen) + parseInt(objektifSentimen));
+                (function(d3) {
+
+                'use strict';
+
+                //Definisi dataset
+                var dataset = [
+                    {name: 'Positive '+positiveSentimen+" dokumen", value: parseInt(positiveSentimen)},
+                    {name: 'Negative '+negativeSentimen+" dokumen", value: parseInt(negativeSentimen)},
+                    {name: 'Objektif '+objektifSentimen+" dokumen", value: parseInt(objektifSentimen)}
+
+                ];
+                //Ukuran layar screen
+                var WIDTH = window.innerWidth;
+                var HEIGHT = window.innerHeight;
+
+                var vis,                                                // select('g')
+                    pie,                                                // d3.layout.pie()
+                    arc,                                                // d3.svg.arc()
+                    heading,
+                    colors = ['#2736ee', '#ff414b', '#d27be6'],
+                    pickColor,
+                    reqId,
+                    count = 0,
+                    radius = Math.min(WIDTH, HEIGHT)/2,
+                    outerRadius = radius / 2,
+                    innerRadius = radius / 3,
+
+                    total = (function() {
+                        for(var sum = 0, i = 0; i < dataset.length; i++) {
+                            sum += dataset[i].value;
+                        }
+                        return sum;
+                    })();
+
+                // inisialisasi fungsi
+                var init = function() {
+
+                    vis = d3.select('#container')
+                            .append('svg:svg')
+                            .attr('width', WIDTH)
+                            .attr('height', HEIGHT)
+                            .append('g')
+                            .attr('transform', 'translate('+ WIDTH / 3 + ',' + HEIGHT / 3 +')');
+
+                    pie = d3.layout.pie()
+                            .sort(null)
+                            .startAngle(0)
+                            .endAngle(2 * Math.PI)
+                            .value(function(d) {
+                                return d.value;
+                            });
+
+                    arc = d3.svg.arc().innerRadius(innerRadius).outerRadius(outerRadius);
+
+                    pickColor = d3.scale.ordinal().range(colors);
+
+                    vis.selectAll('g')
+                        .data(pie(dataset))
+                        .enter()
+                        .append('svg:g')
+                        .attr('class', 'group')
+                        .on('mouseover', mouseOverHandler)
+                        .on('mouseout', mouseOutHandler)
+                        .append('path')
+                        .attr('class', 'arc')
+                        .attr('fill', function(d, i) { return pickColor(i); })
+                        .transition()
+                        .delay(function(d, i) { return i * 500; })
+                        .duration(500)
+                        .attrTween('d', angleTween);
+
+                    vis.selectAll('g')
+                        .append('svg:text')
+                        .attr('class', 'name')
+                        .attr('dy', 6)
+                        .attr('fill', '#ffffff')
+                        .attr('transform', function(d) {
+                            return 'translate(' + arc.outerRadius(outerRadius * 1.8).centroid(d)[0] + ',' + arc.outerRadius(outerRadius * 1.8).centroid(d)[1] + ')';
+                        })
+                        .transition()
+                        .delay(function(d, i) { return i * 500 + 500; })
+                        .duration(500)
+                        .ease('cubic-in-out')
+                        .attrTween('fill', fillTween)
+                        .text(function(d) {
+                            return d.data.name;
+                        })
+                        .style('font-size', 20 + 'px');
+
+                    vis.selectAll('g')
+                        .append('svg:line')
+                        .attr('x1', function(d) { return arc.outerRadius(outerRadius * 1.3).centroid(d)[0]; })
+                        .attr('y1', function(d) { return arc.outerRadius(outerRadius * 1.3).centroid(d)[1]; })
+                        .transition()
+                        .delay(function(d, i) { return i * 500 + 500; })
+                        .duration(500)
+                        .attrTween('x2', xTween)
+                        .attrTween('y2', yTween)
+                        .attr('class', 'line');
+
+                    vis.append('svg:text')
+                        .attr('class', 'heading')
+                        .style('font-size', 30 + 'px')
+                        .text('Corpus');
+
+                    vis.append('svg:text')
+                        .attr('class', 'count')
+                        .attr('dy', 20 + radius * 0.05)
+                        .style('font-size', 15 + 'px')
+                        .style('font-weight', 'bold');
+
+                    runCounter();
+                };
+
+                // 為數字加上逗點
+                var numericFormat = function(num) {
+                    var reg = /(\d+)(\d{3})/,
+                        num = '' + parseInt(num);
+                    while(reg.test(num)) {
+                        num = num.replace(reg, '$1' + ',' + '$2');
+                    }
+                    return num;
+                };
+
+                // 計數效果
+                var runCounter = function() {
+                    count += 56789;
+                    if(count < total) {
+                        d3.select('.count').text(numericFormat(count) + ' dokumen');
+                        reqId = requestAnimationFrame(runCounter);
+                    } else {
+                        d3.select('.count').text(numericFormat(total) + ' dokumen');
+                        cancelAnimationFrame(reqId);
+                    }
+                };
+
+                // 滑鼠移至弧形上的效果
+                var mouseOverHandler = function(d) {
+                    cancelAnimationFrame(reqId);
+                    d3.select(this).selectAll('path, text, line').classed({'hover': true});
+                    d3.select(this).select('.name').style('font-size', radius * 0.07 + 'px');
+                    d3.select('.heading').classed({'hover': true}).text(d.data.name);
+                    d3.select('.count').classed({'hover': true}).text(numericFormat(d.value) + ' dokumen ( '+parseFloat(parseInt(d.value)*100/totalDokumen).toFixed(2)+'%)');
+                };
+
+                // 滑鼠離開弧形後的效果
+                var mouseOutHandler = function() {
+                    reqId = requestAnimationFrame(runCounter);
+                    d3.select(this).selectAll('path, text, line').classed({'hover': false});
+                    d3.select(this).select('.name').style('font-size', 30 + 'px');
+                    d3.select('.heading').classed({'hover': false}).text('Corpus');
+                    d3.select('.count').classed({'hover': false});
+                };
+
+                // 弧形角度的動畫
+                var angleTween = function(d) {
+                    var i = d3.interpolate(d.startAngle, d.endAngle);
+                    return function(t) {
+                        d.endAngle = i(t);
+                        arc.innerRadius(innerRadius).outerRadius(outerRadius);
+                        return arc(d);
+                    }
+                };
+
+                // warna garis
+                var fillTween = function(d) {
+                    var i = d3.interpolate('#000000', '#000000');
+                    return function(t) {
+                        return i(t);
+                    }
+                };
+
+                // Untuk menggambar garis x
+                var xTween = function(d) {
+                    var i = d3.interpolate(arc.outerRadius(outerRadius * 1.3).centroid(d)[0], arc.outerRadius(outerRadius * 1.5).centroid(d)[0]);
+                    return function(t) {
+                        return i(t);
+                    }
+                };
+
+                // Untuk menggambar garis y
+                var yTween = function(d) {
+                    var i = d3.interpolate(arc.outerRadius(outerRadius * 1.3).centroid(d)[1], arc.outerRadius(outerRadius * 1.5).centroid(d)[1]);
+                    return function(t) {
+                        return i(t);
+                    }
+                };
+
+                return init();
+
+            })(window.d3);
+            });
+        </script>
+        <!--Script untuk membuat wordcloud untuk sentiment topic modelling -->
+        <script>
+            // Word Cloud prototype implementation using <canvas>
+            // Jan Forst, 2012-04-10
+            var OFFSET = 8;
+
+            function getFont(style, size, name) {
+                return (style + ' ' + size + 'px ' + name);
+            }
+
+            function measureText(text, font, size, context) {
+                context.font = font;
+                var metrics = context.measureText(text);
+                return {
+                    width: metrics.width + 2 * OFFSET,
+                    height: Math.round(size * 1.5)
+                };
+            }
+
+            function putText(text, font, x, y, context, colorCloud) {
+                context.font = font;
+                context.textBaseline = 'top';
+                context.fillStyle = colorCloud;
+                context.fillText(text, x, y);
+            }
+
+            function testCollision(pixels) {
+                var i;
+
+                for (i = 0; i < pixels.length; i += 4) {
+                    if (pixels[i + 3] > 128) {
+                        return true;
+                    }
+                }
+
+                return false;
+            }
+
+            function getCloud(data, style, name, testid, cloudid, colorText) {
+                var canvasTest = document.getElementById(testid);
+                var contextTest = canvasTest.getContext("2d");
+                var canvasCloud = document.getElementById(cloudid);
+                var contextCloud = canvasCloud.getContext("2d");
+                var colorCloud = colorText;
+
+                var w = 350;
+                var h = 200;
+
+                var i;
+
+                for (i = 0; i < data.length; i++) {
+                    var m = data[i];
+                    var text = m[0];
+                    var size = m[1];
+                    var col = true;
+                    var max = 10;
+                    var font = getFont(style, size, name);
+                    var measure = measureText(text, font, size, contextTest);
+
+                    while (col && (max-- > 0)) {
+
+
+                        var x = Math.round(Math.random() * (w - measure.width - OFFSET)) + 2 * OFFSET;
+                        var y = Math.round(Math.random() * (h - measure.height));
+
+                        var bx = x - OFFSET;
+                        bx = (bx < 0) ? 0 : bx;
+                        var by = y;
+                        var bw = measure.width;
+                        var bh = measure.height;
+
+                        contextCloud.drawImage(contextTest.canvas, bx, by, bw, bh, bx, by, bw, bh);
+                        putText(text, font, x, y, contextTest, colorCloud);
+
+                        var img = contextTest.getImageData(bx, by, bw, bh);
+                        col = testCollision(img.data);
+
+                        if (col) {
+                            contextTest.clearRect(bx, by, bw, bh);
+                            contextTest.drawImage(contextCloud.canvas, bx, by, bw, bh, bx, by, bw, bh);
+                            size = Math.max(Math.round(size * 0.85), 10);
+                            font = getFont(style, size, name);
+                            measure = measureText(text, font, size, contextTest);
+                        }
+
+                        contextCloud.clearRect(bx, by, bw, bh);
+                    }
+                }
+            }
+
+            var jsonPositive = {{ jsonPositive|safe }};
+            var jsonNegative = {{ jsonNegative|safe }};
+            var topics = parseInt({{ topics }});
+
+
+            $('#topikSentimen').change(function () {
+                var key = parseInt($(this).val());
+                $('canvas').remove();
+
+                for(var i = 0; i < topics; i++){
+                    $('#positiveTopic_' + i).append('<canvas id="testPos_'+ i +'" width="350" height="200" style="border:0;"></canvas>',
+                    '<canvas id="cloudPos_'+ i +'" width="350" height="200" style="display: none;"></canvas>');
+
+                    $('#negativeTopic_' + i).append('<canvas id="testNeg_'+ i +'" width="350" height="200" style="border:0;"></canvas>',
+                        '<canvas id="cloudNeg_'+ i +'" width="350" height="200" style="display: none;"></canvas>');
+                    var index = String(i);
+
+                    var dataPos = jsonPositive[key][index];
+                    var dataNeg = jsonNegative[key][index];
+
+                    getCloud(dataPos, 'bold italic', 'Amaranth', 'testPos_'+i, 'cloudPos_'+i, 'rgba(0,0,255,0.5)');
+                    getCloud(dataNeg,'bold italic', 'Amaranth', 'testNeg_'+i, 'cloudNeg_'+i, 'rgba(255,0,0,0.5)');
+                };
+
+                $('#buangan').val(dataPos);
+            });
+        </script>
+    {% endblock %}
+

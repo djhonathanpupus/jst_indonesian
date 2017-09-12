@@ -1,0 +1,71 @@
+{% extends 'WMMS/header.html' %}
+
+{% block content %}
+{% load staticfiles %}
+<script src="{% static 'js/test.js' %}"></script>
+<script>
+function check(){
+	var m1 = {{m1}}
+	if (m1==1){
+		var a = document.getElementById('ApiOpt');
+		a.style.display = (a.style.display == 'none')?'block' : 'none';
+		var b = document.getElementById('SrcOpt');
+		b.style.display = (a.style.display == 'block')?'none' : 'block';
+}}
+function start(){
+	check()
+	forma('Worldwide')
+}
+window.onload = start;
+</script>
+	<center>
+	<form method = "Post" action = ''>{% csrf_token %} 
+		{{form.as_table}}  <input type = "submit" value = "submit" name ="crawl"> <br/>
+	</form>
+	
+				
+	</center>
+	Trending Topic
+	<select id='country_dropdown' onchange='asd()' onclick='bsd()'>
+	{% for i in country %}
+	<option value ='{{i}}'>{{i}}</option>
+	{% endfor %}
+	</select>
+	<div id='trends'>
+	{% for i,j in test.items %}
+	 <div id={{i}} style='display:none;'>
+	 <h3>{{i}}</h3>
+	 {% for k in j %}
+	<p>{{k}}</p>
+	{% endfor %}
+	</div>
+	{% endfor %}
+	</div>
+	<center>
+	
+		<button type="button" onclick ="forma('advancedOptions')">Advanced Options</button>
+		<div id='advancedOptions' style='display:none;'>
+		<form method ='Post'>{% csrf_token %}
+		{{form1}}<br/>
+		{{form2.as_table}}
+			<div id='ApiOpt'>
+			
+			<h2>API</h2>
+			</div>
+			
+			<div id='SrcOpt' style='display:none;'>
+			{{form3.as_table}}
+			<h2>Search</h2>
+			</div>
+		<input type ='submit' value='submit'>
+		</form>
+			
+		</div>
+
+	</center>
+	
+	<a href="../hasil">Hasil</a>
+	
+	{{f3}}
+	
+{% endblock %}
