@@ -7,7 +7,7 @@ from collections import Counter
 # path = 'C:/Users/USER/Desktop/Parallel Corpus/*.txt'
 
 def words(text): return re.findall(r'\w+', text.lower())
-file = open(r"C:\Users\djhonathanpupus\Desktop\JST JHO\jst\preprocess\ind_news_2012_10k\ind_news_2012_10K-sentences.txt", "r", encoding="utf-8-sig").read()
+file = open(os.path.join(BASE_DIR, '\preprocess\ind_news_2012_10k\ind_news_2012_10K-sentences.txt'), "r", encoding="utf-8-sig").read()
 file = re.sub('[\d\W]',' ',str(file)) #jgn lupa corpus di bikin lower text; buat fungsi
     
 WORDS = Counter(file.lower().split())
